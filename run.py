@@ -51,7 +51,7 @@ def give_status():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip",
-                        default="127.0.0.1", help="The ip to listen on")
+                        default="192.168.1.62", help="The ip to listen on")
     parser.add_argument("--port",
                         type=int, default=port_in, help="The port to listen on")
     args = parser.parse_args()
