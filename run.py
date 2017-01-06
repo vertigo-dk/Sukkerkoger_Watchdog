@@ -20,9 +20,11 @@ ip_out = "192.168.1.63"
 
 def shutdown(unused_addr):
     import os
+    os.system('echo shutting down')
     os.system("sudo shutdown -h now")
 
 def give_status():
+    import os
 # Check processes running and send /ok if video player is running
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip", default=ip_out,
@@ -38,9 +40,11 @@ def give_status():
             # process running
             x = subprocess.check_output(['pidof omxplayer.bin -s'])
             client.send_message("/dead/" + str(pi_id), 0)
+            os.system('echo omxplayer running')
         except FileNotFoundError:
             # process not running
             client.send_message("/dead/" + str(pi_id), 1)
+            os.system('echo omxplayer not running')
 
         time.sleep(5.0)
 
