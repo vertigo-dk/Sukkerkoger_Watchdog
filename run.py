@@ -16,6 +16,7 @@ pi_id = 1
 port_in = 7010 + pi_id
 port_out = 7001
 ip = "127.0.0.1"
+ip_out = "192.168.1.63"
 
 def shutdown(unused_addr):
     import os
@@ -24,7 +25,7 @@ def shutdown(unused_addr):
 def give_status():
 # Check processes running and send /ok if video player is running
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", default="127.0.0.1",
+    parser.add_argument("--ip", default=ip_out,
     help="The ip of the OSC server")
     parser.add_argument("--port", type=int, default=port_out,
     help="The port the OSC server is listening on")
