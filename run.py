@@ -15,7 +15,7 @@ from pythonosc import udp_client
 pi_id = 2
 port_in = 7010 + pi_id
 port_out = 7001
-ip = "localhost"
+ip = "192.168.1.62" # IP of pi ('localhost' isn't enough)
 ip_out = "192.168.1.63"
 
 def shutdown(unused_addr):
@@ -36,23 +36,25 @@ def give_status():
 
     # check processes running
     while True:
-        process_name = "supervisord"
+        process_name = "omxplayer"
         process_running = False
 
         for proc in psutil.process_iter():
             if proc.name() == process_name:
                 process_running = True
                 print('video_player running')
+                client.send_message("/dead/" + str(pi_id), 0)
 
         if(process_running == False):
             print('video_player not running')
+            client.send_message("/dead/" + str(pi_id), 1)
 
         time.sleep(5.0)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip",
-                        default="127.0.0.1", help="The ip to listen on")
+                        default=ip, help="The ip to listen on")
     parser.add_argument("--port",
                         type=int, default=port_in, help="The port to listen on")
     args = parser.parse_args()
