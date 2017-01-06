@@ -12,7 +12,7 @@ from pythonosc import osc_message_builder
 from pythonosc import udp_client
 
 # Main loop / OSC Listener
-pi_id = 1
+pi_id = 2
 port_in = 7010 + pi_id
 port_out = 7001
 ip = "localhost"
