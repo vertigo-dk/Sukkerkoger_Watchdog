@@ -15,7 +15,7 @@ from pythonosc import udp_client
 pi_id = 1
 port_in = 7010 + pi_id
 port_out = 7001
-ip = "127.0.0.1"
+ip = "localhost"
 ip_out = "192.168.1.63"
 
 def shutdown(unused_addr):
@@ -40,7 +40,7 @@ def give_status():
             # process running
             x = subprocess.check_output(['pidof omxplayer.bin -s'])
             client.send_message("/dead/" + str(pi_id), 0)
-            os.system('echo omxplayer running')
+            os.system('echo omxplayer running - pid: ' + str(x))
         except FileNotFoundError:
             # process not running
             client.send_message("/dead/" + str(pi_id), 1)
@@ -51,7 +51,7 @@ def give_status():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip",
-                        default=ip, help="The ip to listen on")
+                        default="127.0.0.1", help="The ip to listen on")
     parser.add_argument("--port",
                         type=int, default=port_in, help="The port to listen on")
     args = parser.parse_args()
