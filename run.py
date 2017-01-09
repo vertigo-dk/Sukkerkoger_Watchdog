@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 __author__ = 'frederikjuutilainen'
 
-import argparse, threading, time, subprocess, psutil
+import argparse, threading, time, subprocess, psutil, socket
 
 #receiving osc
 from pythonosc import dispatcher
@@ -12,11 +12,13 @@ from pythonosc import osc_message_builder
 from pythonosc import udp_client
 
 # Main loop / OSC Listener
-pi_id = 2
+pi_hostname = socket.gethostname()
+pi_hostname_array = pi_hostname.split('-')
+pi_id = int(pi_hostname_array[-1])
 port_in = 7010 + pi_id
 port_out = 7001
-ip = "192.168.1.62" # IP of pi ('localhost' isn't enough)
-ip_out = "192.168.1.63"
+ip = socket.gethostname() # IP of pi ('localhost' isn't enough)
+ip_out = "glycomics.local"
 
 def shutdown(unused_addr):
     import os
@@ -42,11 +44,9 @@ def give_status():
         for proc in psutil.process_iter():
             if proc.name() == process_name:
                 process_running = True
-                print('video_player running')
                 client.send_message("/dead/" + str(pi_id), 0)
 
         if(process_running == False):
-            print('video_player not running')
             client.send_message("/dead/" + str(pi_id), 1)
 
         time.sleep(5.0)
