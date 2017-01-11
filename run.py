@@ -34,17 +34,17 @@ ser = serial.Serial(
 def setVol(unused_addr, args):
     vol = args[0]
     print("setVolume "+str(vol)
-    ser.write(bytearray([0xAA, 0xFE, 0x12, 0x01, hex(vol)])
+    ser.write(bytearray([0xAA, 0xFE, 0x12, 0x01, hex(vol)]))
 
 
 def screenTurnOn(unused_addr):
     print("screenTurnOn")
-    ser.write(bytearray([0xAA, 0xFE, 0x11, 0x01, 0x01])
+    ser.write(bytearray([0xAA, 0xFE, 0x11, 0x01, 0x01]))
 
 
 def screenTurnOff(unused_addr):
     print("screenTurnOff")
-    ser.write(bytearray([0xAA, 0xFE, 0x11, 0x01, 0x00])
+    ser.write(bytearray([0xAA, 0xFE, 0x11, 0x01, 0x00]))
 
 
 def shutdown(unused_addr):
