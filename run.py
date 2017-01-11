@@ -31,11 +31,10 @@ def setVol(unused_addr, args):
         bytesize=serial.EIGHTBITS,
         timeout=1
     )
-    vol = args[0]
-    ser.write(bytearray([0xAA, 0xFE, 0x12, 0x01, hex(vol)]))
+    checksum = (0x11+args) & 0xFF
+    ser.write(bytearray([0xAA, 0x12, 0xFE, 0x01, args, checksum]))
     ser.close()
-    print("setVolume "+str(vol))
-
+    print("setVolume "+str(args))
 
 def screenTurnOn(unused_addr):
     ser = serial.Serial(
@@ -46,7 +45,7 @@ def screenTurnOn(unused_addr):
         bytesize=serial.EIGHTBITS,
         timeout=1
     )
-    ser.write(bytearray([0xAA, 0xFE, 0x11, 0x01, 0x01]))
+    ser.write(bytearray([0xAA, 0x11, 0xFE, 0x01, 0x01, 0x12]))
     ser.close()
     print("screenTurnOn")
 
@@ -60,7 +59,7 @@ def screenTurnOff(unused_addr):
         bytesize=serial.EIGHTBITS,
         timeout=1
     )
-    ser.write(bytearray([0xAA, 0xFE, 0x11, 0x01, 0x00]))
+    //ser.write(bytearray([0xAA, 0x11, 0xFE, 0x01, 0x00, 0x11]))
     print("screenTurnOff")
 
 def shutdown(unused_addr):
