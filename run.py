@@ -33,21 +33,24 @@ ser = serial.Serial(
 #    ser.write(('Write counter: %d \n'%(counter)).encode('utf-8'))
 def setVol(unused_addr, args):
     vol = args[0]
-#    ser.write(0xAAFE120100+vol)
+    print("setVolume "+str(vol)
+    #ser.write(0xAAFE120100+vol)
     ser.write(0xAA)
     ser.write(0xFE)
     ser.write(0x01)
     ser.write(vol)
 
 def screenTurnOn(unused_addr):
-#    ser.write(0xAAFE110101)
+    print("screenTurnOn")
+    #ser.write(0xAAFE110101)
     ser.write(0xAA)
     ser.write(0xFE)
     ser.write(0x01)
     ser.write(0x01)
 
 def screenTurnOff(unused_addr):
-#    ser.write(0xAAFE110100)
+    print("screenTurnOff")
+    #ser.write(0xAAFE110100)
     ser.write(0xAA)
     ser.write(0xFE)
     ser.write(0x01)
@@ -103,7 +106,7 @@ if __name__ == "__main__":
 
     server = osc_server.ThreadingOSCUDPServer(
     (args.ip, args.port), dispatcher)
-    print("Serving on {}".format(server.server_address))
+        print("Serving on {}".format(server.server_address))
 
     t = threading.Timer(1.0, give_status)
     t.start()
