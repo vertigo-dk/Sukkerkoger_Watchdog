@@ -20,32 +20,48 @@ port_out = 7001
 ip = socket.gethostname() # IP of pi ('localhost' isn't enough)
 ip_out = "glycomics.local"
 
-# setup serial out for screen remote control
-ser = serial.Serial(
-    port='/dev/ttyAMA0',
-    baudrate = 9600,
-    parity=serial.PARITY_NONE,
-    stopbits=serial.STOPBITS_ONE,
-    bytesize=serial.EIGHTBITS,
-    timeout=1
-)
 
 #    ser.write(('Write counter: %d \n'%(counter)).encode('utf-8'))
 def setVol(unused_addr, args):
+    ser = serial.Serial(
+        port='/dev/ttyAMA0',
+        baudrate = 9600,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+    )
     vol = args[0]
-    print("setVolume "+str(vol)
     ser.write(bytearray([0xAA, 0xFE, 0x12, 0x01, hex(vol)]))
+    ser.close()
+    print("setVolume "+str(vol)
 
 
 def screenTurnOn(unused_addr):
-    print("screenTurnOn")
+    ser = serial.Serial(
+        port='/dev/ttyAMA0',
+        baudrate = 9600,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+    )
     ser.write(bytearray([0xAA, 0xFE, 0x11, 0x01, 0x01]))
+    ser.close()
+    print("screenTurnOn")
 
 
 def screenTurnOff(unused_addr):
-    print("screenTurnOff")
+    ser = serial.Serial(
+        port='/dev/ttyAMA0',
+        baudrate = 9600,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+    )
     ser.write(bytearray([0xAA, 0xFE, 0x11, 0x01, 0x00]))
-
+    print("screenTurnOff")
 
 def shutdown(unused_addr):
     import os
