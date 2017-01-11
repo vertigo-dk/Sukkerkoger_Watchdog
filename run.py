@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 __author__ = 'frederikjuutilainen'
 
-import argparse, threading, time, subprocess, psutil, socket
+import argparse, threading, time, subprocess, psutil, socket, serial
 
 #receiving osc
 from pythonosc import dispatcher
@@ -19,6 +19,39 @@ port_in = 7010 + pi_id
 port_out = 7001
 ip = socket.gethostname() # IP of pi ('localhost' isn't enough)
 ip_out = "glycomics.local"
+
+# setup serial out for screen remote control
+ser = serial.Serial(
+    port='/dev/ttyAMA0',
+    baudrate = 9600,
+    parity=serial.PARITY_NONE,
+    stopbits=serial.STOPBITS_ONE,
+    bytesize=serial.EIGHTBITS,
+    timeout=1
+)
+
+#    ser.write(('Write counter: %d \n'%(counter)).encode('utf-8'))
+def setVol(unused_addr, args):
+    vol = args[0]
+#    ser.write(0xAAFE120100+vol)
+    ser.write(0xAA)
+    ser.write(0xFE)
+    ser.write(0x01)
+    ser.write(vol)
+
+def screenTurnOn(unused_addr):
+#    ser.write(0xAAFE110101)
+    ser.write(0xAA)
+    ser.write(0xFE)
+    ser.write(0x01)
+    ser.write(0x01)
+
+def screenTurnOff(unused_addr):
+#    ser.write(0xAAFE110100)
+    ser.write(0xAA)
+    ser.write(0xFE)
+    ser.write(0x01)
+    ser.write(0x00)
 
 def shutdown(unused_addr):
     import os
@@ -60,6 +93,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     dispatcher = dispatcher.Dispatcher()
+
+    dispatcher.map("/setVol",setVol)
+    dispatcher.map("/screenTurnOn",screenTurnOn)
+    dispatcher.map("/screenTurnOff",screenTurnOff)
+
     dispatcher.map("/quit",quit)
     dispatcher.map("/shutdown",shutdown)
 
