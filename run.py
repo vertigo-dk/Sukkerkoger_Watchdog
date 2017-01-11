@@ -34,7 +34,7 @@ def setVol(unused_addr, args):
     vol = args[0]
     ser.write(bytearray([0xAA, 0xFE, 0x12, 0x01, hex(vol)]))
     ser.close()
-    print("setVolume "+str(vol)
+    print("setVolume "+str(vol))
 
 
 def screenTurnOn(unused_addr):
@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
     server = osc_server.ThreadingOSCUDPServer(
     (args.ip, args.port), dispatcher)
-        print("Serving on {}".format(server.server_address))
+    print("Serving on {}".format(server.server_address))
 
     t = threading.Timer(1.0, give_status)
     t.start()
