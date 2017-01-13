@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 __author__ = 'frederikjuutilainen'
 
-import argparse, threading, time, subprocess, psutil, socket, serial
+import argparse, threading, time, subprocess, psutil, socket
 
 #receiving osc
 from pythonosc import dispatcher
@@ -18,49 +18,8 @@ pi_id = int(pi_hostname_array[-1])
 port_in = 7010 + pi_id
 port_out = 7001
 ip = socket.gethostname() # IP of pi ('localhost' isn't enough)
-ip_out = "glycomics.local"
+ip_out = "10.128.110.67"
 
-
-#    ser.write(('Write counter: %d \n'%(counter)).encode('utf-8'))
-def setVol(unused_addr, args):
-    ser = serial.Serial(
-        port='/dev/ttyAMA0',
-        baudrate = 9600,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.EIGHTBITS,
-        timeout=1
-    )
-    checksum = (0x11+args) & 0xFF
-    ser.write(bytearray([0xAA, 0x12, 0xFE, 0x01, args, checksum]))
-    ser.close()
-    print("setVolume "+str(args))
-
-def screenTurnOn(unused_addr):
-    ser = serial.Serial(
-        port='/dev/ttyAMA0',
-        baudrate = 9600,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.EIGHTBITS,
-        timeout=1
-    )
-    ser.write(bytearray([0xAA, 0x11, 0xFE, 0x01, 0x01, 0x12]))
-    ser.close()
-    print("screenTurnOn")
-
-
-def screenTurnOff(unused_addr):
-    ser = serial.Serial(
-        port='/dev/ttyAMA0',
-        baudrate = 9600,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.EIGHTBITS,
-        timeout=1
-    )
-    //ser.write(bytearray([0xAA, 0x11, 0xFE, 0x01, 0x00, 0x11]))
-    print("screenTurnOff")
 
 def reboot(unused_addr):
     import os
@@ -107,11 +66,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     dispatcher = dispatcher.Dispatcher()
-
-    dispatcher.map("/setVol",setVol)
-    dispatcher.map("/screenTurnOn",screenTurnOn)
-    dispatcher.map("/screenTurnOff",screenTurnOff)
-
     dispatcher.map("/reboot",reboot)
     dispatcher.map("/shutdown",shutdown)
 
