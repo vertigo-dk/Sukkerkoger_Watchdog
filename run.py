@@ -62,6 +62,11 @@ def screenTurnOff(unused_addr):
     //ser.write(bytearray([0xAA, 0x11, 0xFE, 0x01, 0x00, 0x11]))
     print("screenTurnOff")
 
+def reboot(unused_addr):
+    import os
+    os.system('echo shutting down')
+    os.system("sudo shutdown -r now")
+
 def shutdown(unused_addr):
     import os
     os.system('echo shutting down')
@@ -107,7 +112,7 @@ if __name__ == "__main__":
     dispatcher.map("/screenTurnOn",screenTurnOn)
     dispatcher.map("/screenTurnOff",screenTurnOff)
 
-    dispatcher.map("/quit",quit)
+    dispatcher.map("/reboot",reboot)
     dispatcher.map("/shutdown",shutdown)
 
     server = osc_server.ThreadingOSCUDPServer(
